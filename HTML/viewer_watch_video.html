@@ -1,0 +1,98 @@
+<!-- HTML begin-->
+<html>
+    <head>
+        <link href="CSS/Style.css" rel="stylesheet" type="text/css">
+        <title>304Tube - Watch Video</title>
+    </head>  
+
+    <body>
+    <div class="full-height">
+    
+        <div class = "user_info">
+            <center><img src = "images/304tube_icon.png" width="40%" height="auto"></center>
+            <font face = "Helvetica">
+            <h4>
+            <p>
+            Username: placeholder
+            <p>
+            Viewcount: placeholder
+            <p>
+            Creditcard: placeholder
+            <p>
+            Lists: 
+            <p>list1
+            <p>list2
+            <p>list3
+            <p>.....
+            <h4>   
+        </div>
+    
+        <div class = "page_contents">
+            <center><h1>Video Title</h1><p>
+                <h3>Youtube link</h3><p>
+                <h3>Video Length: placeholder</h3><p>
+                <h3>Video Genre: placeholder</h3><p>   
+                <h3>Video rating</h3><p> 
+                <h3>View Count: placeholder</h3><p> 
+            </center>
+
+                <form method="POST" action="304tube.php">
+                    <font face = "Helvetica">
+                    <center><h2>Rename List:</h2><p>
+                    Current List Name:
+                    <input type="text" name="updateList_oldName" id="inputbox" placeholder=" Current List Name">
+                    New List Name:
+                    <input type="text" name="updateList_newName" id="inputbox" placeholder="New List Name">
+                    <input class = "form-submit-button" type="SUBMIT" name="renameList" value="Rename"></center>
+                </form>
+
+                <form method="POST" action="304tube.php">
+                    <font face = "Helvetica">
+                    <center><h2>Create watch session:</h2><p>
+                    <p>
+                    Timestamp:
+                    <input type="text" name="watchSession_timestamp" id="inputbox" placeholder="xx:xx">
+                    <input class = "form-submit-button" type="SUBMIT" name="createSession" value="Create"></center>
+                </form>
+
+                <form method="POST" action="304tube.php">
+                    <font face = "Helvetica">
+                    <center><h2>Add rating:</h2><p>
+                    <p>
+                    Rating:
+                    <input list="video_rating" name="video_rating">
+                        <datalist id="video_rating">
+                        <option value="1 Star"></option>
+                        <option value="2 Sars"></option>
+                        <option value="3 Sars"></option>
+                        <option value="4 Sars"></option>
+                        <option value="5 Sars"></option>
+                        </datalist>
+                    Comment:
+                    <input type="text" name="rating_comment" id="inputbox" placeholder="Comment">
+                    <input class = "form-submit-button" type="SUBMIT" name="videoRating" value="Rate"></center>
+                </form>
+
+                <form method="POST" action="304tube.php">
+                    <font face = "Helvetica">
+                    <center><h2>Report Video:</h2><p>
+                    <p>
+                    Reason:
+                    <input type="text" name="report_reason" id="inputbox" placeholder="Reason">
+                    <input class = "form-submit-button" type="SUBMIT" name="reportVideo" value="Report"></center>
+                </form>
+
+                <center><h2>Video Reviews:</h2><p>
+                    show reviews where comment is not null
+                </p></center>
+        </div>
+    </div>
+    </body>
+  
+  
+</html>
+<!-- HTML end-->
+
+<script>
+
+</script>    

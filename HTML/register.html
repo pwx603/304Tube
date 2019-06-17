@@ -2,9 +2,8 @@
 <html>
     <head>
         <link href="CSS/Style.css" rel="stylesheet" type="text/css">
-        <title>304Tube - login</title>
+        <title>304Tube - Register</title>
     </head>  
-       
     <body>
     <div class="full-height">
     
@@ -20,19 +19,31 @@
             <center>
                 <form method="POST" action="304tube.php">
                     <font face = "Helvetica">
-                    <h1> USER LOGIN<h1>
+                    <h1> User Registration<h1>
+                    <h2> User type:<h2>
+                    <input list="user_type" name="user_type">
+                        <datalist id="user_type">
+                        <option value="Viewer"></option>
+                        <option value="Uploader"></option>
+                        </datalist>
+                    <h2> Email:<h2>
+                    <p><input type="text" name="email" id="username_box" placeholder="Email"></p>
                     <h2> Username:<h2>
                     <p><input type="text" name="username" id="username_box" placeholder="Username"></p>
                     <h2> Password:<h2>
                     <p><input type="password" name="password" id="password_box" placeholder="Password"></p>
-                    <input class = "form-submit-button" type="SUBMIT" name="loginConfirm" value="Login"></p>
+                    <h2> Re-enter Password:<h2>
+                    <p><input type="password" name="confirm_password" id="password_box" placeholder="Confirm Password"></p>
+                    <input class = "form-submit-button" type="SUBMIT" name="registerConfirm" value="Register"></p>
                 </form>
                 <form method="POST" action="304tube.php">
-                    <input class = "form-register-button" type="SUBMIT" name="registerPage" value="Register"></p>
+                    <input class = "form-register-button" type="SUBMIT" name="loginPage" value="Login"></p>
                 </form>
             </center>
         </div>
     </div>
     </body>
+  
+  
 </html>
 <!-- HTML end-->

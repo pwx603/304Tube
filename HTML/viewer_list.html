@@ -1,0 +1,80 @@
+<!-- HTML begin-->
+<html>
+    <head>
+        <link href="CSS/Style.css" rel="stylesheet" type="text/css">
+        <title>304Tube - Viewer List</title>
+    </head>  
+
+    <body>
+    <div class="full-height">
+    
+        <div class = "user_info">
+            <center><img src = "images/304tube_icon.png" width="40%" height="auto"></center>
+            <font face = "Helvetica">
+            <h4>
+            <p>
+            Username: placeholder
+            <p>
+            Viewcount: placeholder
+            <p>
+            Creditcard: placeholder
+            <p>
+            Lists: 
+            <p>list1
+            <p>list2
+            <p>list3
+            <p>.....
+            <h4>   
+        </div>
+    
+        <div class = "page_contents">
+                <form method="POST" action="304tube.php">
+                    <font face = "Helvetica">
+                    <center><h2>Create List:</h2><p>
+                    List Name:
+                    <input type="text" name="createlist_name" id="inputbox" placeholder="List Name">
+                    <input class = "form-submit-button" type="SUBMIT" name="createlist" value="Create"></center>
+                </form>   
+
+                <form method="POST" action="304tube.php">
+                    <font face = "Helvetica">
+                    <center><h2>Delete List:</h2><p>
+                    List Name:
+                    <input type="text" name="deletelist_name" id="inputbox" placeholder="List Name">
+                    <input class = "form-submit-button" type="SUBMIT" name="deletelist" value="Delete"></center>
+                </form>
+
+                <form method="POST" action="304tube.php">
+                    <font face = "Helvetica">
+                    <center><h2>Delete Video from List:</h2><p>
+                    List Name:
+                    <input type="text" name="deletelist_name" id="inputbox" placeholder="List Name">
+                    Video Name:
+                    <input type="text" name="deletelist_video" id="inputbox" placeholder="Video Name">
+                    <input class = "form-submit-button" type="SUBMIT" name="deleteVideo_list" value="Delete"></center>
+                </form>
+
+                <form method="POST" action="304tube.php">
+                    <font face = "Helvetica">
+                    <center><h2>Rename List:</h2><p>
+                    Current List Name:
+                    <input type="text" name="updateList_oldName" id="inputbox" placeholder=" Current List Name">
+                    New List Name:
+                    <input type="text" name="updateList_newName" id="inputbox" placeholder="New List Name">
+                    <input class = "form-submit-button" type="SUBMIT" name="renameList" value="Rename"></center>
+                </form>
+
+                <center><h2>Delete Video from List:</h2><p>
+                    A list of user's lists and videos in that list
+                </p></center>    
+        </div>
+    </div>
+    </body>
+  
+  
+</html>
+<!-- HTML end-->
+
+<script>
+
+</script>    
