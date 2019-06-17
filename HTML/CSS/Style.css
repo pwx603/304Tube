@@ -112,6 +112,49 @@
     
 }
 
+.user_info{
+    padding: 1% 1%;
+    width: 20%;
+    float: left;
+    height: 100%;
+    margin: 0;
+    background-color: #4d5056;
+    color: white;
+}
+
+.page_contents{
+    padding: 2% 0;
+    margin-left:0px;
+    height: 100%;
+    margin: 0;
+    background-color: #eae73c;
+}
+
+    
+#search_box{
+    height: 35px;
+    width: 50%;
+    padding-left: 10px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    box-sizing: border-box;
+}
+
+.video_lists{
+    width: 80%;
+    background-color: white;
+}
+
+    #inputbox{
+        height: 35px;
+        width: 20%;
+        padding-left: 10px;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        box-sizing: border-box;
+    }
 
 </style>
  <!-- CSS end -->
