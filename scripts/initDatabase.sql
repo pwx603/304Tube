@@ -3,7 +3,7 @@ create table user(
 userid integer primary key,
 username char(20) unique not null,
 password char(20) not null,
-phonenumber char(10),
+12 char(10),
 emailaddress char(50) unique
 );
 
