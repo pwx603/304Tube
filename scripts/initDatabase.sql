@@ -12,12 +12,12 @@ create table paymentinformationown (
 userid serial not null,
 creditcardnumber char(16) primary key,
 billingaddress char(30),
-expirydate date,
+expirydate char(4),
 cvcode char(3),
 foreign key(userid) references users (userid)
 on delete cascade
 on update cascade
-);
+); 
 
 -- Current Session
 create table currentsession (
@@ -39,7 +39,7 @@ on update cascade
 create table reportcreate (
 reportid char(15) primary key,
 userid serial not null,
-status char(10) not null default "pending",
+status varchar(10) not null default 'pending',
 decision char(10),
 reportdate date,
 reason char(50),
