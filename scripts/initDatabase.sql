@@ -27,7 +27,7 @@ timestampid integer not null
 
 -- Creating a list
 create table listcreate (
-listid char(10) primary key,
+listid integer primary key,
 userid serial not null,
 listname char(20),
 foreign key (userid) references users (userid)
@@ -73,7 +73,7 @@ foreign key(reportid) references reportcreate(reportid)
 
 -- Video Upload
 create table videoupload (
-videoid char(20) primary key,
+videoid serial primary key,
 userid serial,
 videoname char(30),
 videolength integer,
@@ -86,7 +86,7 @@ on update cascade
 -- Watch
 create table watch (
 userid serial,
-videoid char(20),
+videoid serial,
 sessionid char(15),
 primary key(userid, videoid, sessionid),
 foreign key(userid) references users(userid)
@@ -100,9 +100,22 @@ on delete cascade
 on update cascade
 );
 
+-- ListVideo
+create table listvideo (
+listid integer,
+videoid serial,
+primary key (listid, videoid),
+foreign key (listid) references listcreate(listid)
+on delete cascade
+on update cascade,
+foreign key (videoid) references videoupload(videoid)
+on delete cascade
+on update cascade
+);
+
 -- Advertisementprovide
 create table advertisementprovide (
-adid char(15) unique,
+adid integer unique,
 companyid integer,
 adlength integer,
 primary key(adid, companyid),
@@ -113,8 +126,8 @@ on update cascade
 
 -- Contain
 create table contain (
-videoid char(20),
-adid char(15) unique,
+videoid serial,
+adid integer unique,
 companyid integer,
 primary key(videoid, adid),
 foreign key(videoid) references videoupload(videoid)
