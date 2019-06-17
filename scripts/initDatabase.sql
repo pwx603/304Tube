@@ -1,49 +1,49 @@
 -- User
-create table user(
-userid integer primary key,
-username char(20) unique not null,
-password char(20) not null,
-12 char(10),
-emailaddress char(50) unique
+create table users (
+userid serial primary key,
+username varchar(20) unique not null,
+password varchar(20) not null,
+phonenumber char(10),
+emailaddress varchar(50) unique
 );
 
 -- Payment Information
-create table paymentinformationown(
-userid integer not null,
+create table paymentinformationown (
+userid serial not null,
 creditcardnumber char(16) primary key,
 billingaddress char(30),
-expirydate date,
+expirydate char(4),
 cvcode char(3),
-foreign key(userid) references user (userid)
+foreign key(userid) references users (userid)
 on delete cascade
 on update cascade
-);
+); 
 
 -- Current Session
-create table currentsession(
+create table currentsession (
 sessionid char(15) primary key,
-timestamp integer not null
+timestampid integer not null
 );
 
 -- Creating a list
-create table listcreate(
+create table listcreate (
 listid char(10) primary key,
-userid integer not null,
+userid serial not null,
 listname char(20),
-foreign key (userid) references user (userid)
+foreign key (userid) references users (userid)
 on delete cascade
 on update cascade
 );
 
 -- Report Create
-create table reportcreate(
+create table reportcreate (
 reportid char(15) primary key,
-userid integer not null,
-status char(10) default ‘pending’ not null,
+userid serial not null,
+status varchar(10) not null default 'pending',
 decision char(10),
-date date,
+reportdate date,
 reason char(50),
-foreign key (userid) references user (userid)
+foreign key (userid) references users (userid)
 on delete cascade
 on update cascade
 );
@@ -52,7 +52,7 @@ on update cascade
 create table platformadmin (
 adminid char(15) primary key,
 reportcount integer,
-name char(15),
+name char(15)
 );
 
 -- Company
@@ -70,54 +70,58 @@ foreign key(adminid) references platformadmin (adminid),
 foreign key(reportid) references reportcreate(reportid)
 );
 
--- Watch
-create table watch (
-userid integer,
-videoid integer,
-sessionid char(15),
-primary key(userid, videoid, sessionid),
-foreign key(userid) references user(userid),
-on delete cascade
-on update cascade,
-foreign key(videoid) references video(videoid)
-on delete cascade
-on update cascade,
-foreign key(sessionid) references session(sessionid)
-on delete cascade
-on update cascade
-);
 
 -- Video Upload
-create table videoupload(
+create table videoupload (
 videoid char(20) primary key,
-userid integer,
+userid serial,
 videoname char(30),
 videolength integer,
 videogenre char(15),
-foreign key(user id) references user (userid)
+foreign key(userid) references users (userid)
 on delete set null
 on update cascade
 );
 
-
-create table contain (
-videoid integer,
-adid char(15),
-primary key(videoid, adid),
-foreign key(videoid) references video(videoid)
+-- Watch
+create table watch (
+userid serial,
+videoid char(20),
+sessionid char(15),
+primary key(userid, videoid, sessionid),
+foreign key(userid) references users(userid)
 on delete cascade
 on update cascade,
-foreignkey(adid) references advertisementprovide(adid)
+foreign key(videoid) references videoupload(videoid)
+on delete cascade
+on update cascade,
+foreign key(sessionid) references currentsession(sessionid)
 on delete cascade
 on update cascade
 );
 
+-- Advertisementprovide
 create table advertisementprovide (
-adid char(15),
+adid char(15) unique,
 companyid integer,
-adlength,
+adlength integer,
 primary key(adid, companyid),
 foreign key(companyid) references company(companyid)
 on delete cascade
 on update cascade
 );
+
+-- Contain
+create table contain (
+videoid char(20),
+adid char(15) unique,
+companyid integer,
+primary key(videoid, adid),
+foreign key(videoid) references videoupload(videoid)
+on delete cascade
+on update cascade,
+foreign key(adid, companyid) references advertisementprovide(adid, companyid)
+on delete cascade
+on update cascade
+);
+
