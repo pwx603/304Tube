@@ -141,9 +141,25 @@
     box-sizing: border-box;
 }
 
-.video_lists{
-    width: 80%;
-    background-color: white;
+.video_lists_container{
+    width: 100%;
+    height: 20%;
+    margin: 0;
+}
+
+.video_lists_img{
+    width:20%; 
+    height: 180px; 
+    padding: 5px 10px; 
+    float:left;
+}
+
+.video_lists_description{
+    padding: 5px 10px; 
+    margin-left:0px; 
+    height: 180px; 
+    margin: 0;
+    font-size: 1vw;
 }
 
     #inputbox{
@@ -155,6 +171,7 @@
         border-radius: 20px;
         box-sizing: border-box;
     }
+
 
 </style>
  <!-- CSS end -->
