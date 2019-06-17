@@ -1,0 +1,117 @@
+ <!-- CSS begin -->
+<style>
+    html, body {
+        
+        height: 100%;
+        margin: 0;
+    }
+
+    
+    .page_login{
+        padding: 18% 0;
+        margin-left:0px;
+        height: 100%;
+        margin: 0;
+        background-color: #eae73c;
+    }
+
+    .page_icon{
+        padding: 18% 0;
+        width: 60%;
+        float: left;
+        height: 100%;
+        margin: 0;
+        background-color: #4d5056;
+    }
+
+    #username_box, #password_box{
+        height: 35px;
+        width: 30%;
+        padding-left: 10px;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        box-sizing: border-box;
+    }
+
+.form-submit-button {
+    width: 8%;
+    
+    height: 40px;
+    
+    background: #016ABC;
+    
+    color: #fff;
+    
+    border: 1px solid #eee;
+    
+    border-radius: 20px;
+    
+    box-shadow: 5px 5px 5px #eee;
+    
+    text-shadow:none;
+    
+}
+
+.form-submit-button:hover {
+    
+    width: 8%;
+    
+    height: 40px;
+    
+    background: #B9DFFF;
+    
+    color: #fff;
+    
+    border: 1px solid #eee;
+    
+    border-radius: 20px;
+    
+    box-shadow: 5px 5px 5px #eee;
+    
+    text-shadow:none;
+    
+}
+
+.form-register-button {
+    width: 8%;
+    
+    height: 40px;
+    
+    background: #ce3d56;
+    
+    color: #fff;
+    
+    border: 1px solid #eee;
+    
+    border-radius: 20px;
+    
+    box-shadow: 5px 5px 5px #eee;
+    
+    text-shadow:none;
+    
+}
+
+.form-register-button:hover {
+    
+    width: 8%;
+    
+    height: 40px;
+    
+    background: #ea91a0;
+    
+    color: #fff;
+    
+    border: 1px solid #eee;
+    
+    border-radius: 20px;
+    
+    box-shadow: 5px 5px 5px #eee;
+    
+    text-shadow:none;
+    
+}
+
+
+</style>
+ <!-- CSS end -->
