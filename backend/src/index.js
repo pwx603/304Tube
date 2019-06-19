@@ -1,11 +1,6 @@
 require("dotenv/config")
 const express = require('express')
 
-import models, {
-  sequelize
-} from './models';
-
-
 const app = express()
 var cors = require('cors')
 

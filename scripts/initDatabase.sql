@@ -3,7 +3,7 @@ create table users (
 userid serial primary key,
 username varchar(20) unique not null,
 password varchar(20) not null,
-phonenumber char(10),
+phonenumber char(12),
 emailaddress varchar(50) unique
 );
 

@@ -53,5 +53,14 @@ export default {
     */
     extend(config, ctx) {
     }
-  }
+  },
+
+    server: {
+      port: 4000, // default: 3000
+      host: '0.0.0.0', // default: localhost
+    },
+
+      env: {
+        backendAPI: process.env.backendAPI || 'http://localhost:8001/api/'
+      }
 }
