@@ -11,6 +11,28 @@ phonenumber char(10),
 emailaddress varchar(50) unique
 );
 
+
+-- Uploader 
+create table uploader (
+userid integer primary key,
+videocount integer not null default '0',
+totalview integer not null default '0',
+foreign key(userid) references users (userid)
+on delete cascade
+on update cascade
+);
+
+
+-- Viewer
+create table viewer (
+userid integer primary key,
+viewcount integer not null default '0',
+foreign key(userid) references users (userid)
+on delete cascade
+on update cascade
+);
+
+
 -- Payment Information
 create table paymentinformationown (
 userid integer not null,
@@ -29,6 +51,7 @@ create table videoupload (
 videoid serial primary key,
 userid integer,
 videoname varchar(80),
+videoview integer not null default '0',
 videolength time,
 videogenre varchar(15),
 foreign key(userid) references users (userid)
@@ -52,7 +75,7 @@ on update cascade
 
 -- List Create
 create table listcreate (
-listid integer primary key,
+listid serial primary key,
 userid integer not null,
 listname varchar(20),
 foreign key (userid) references users (userid)
@@ -169,6 +192,22 @@ insert into users (username, password, phonenumber, emailaddress) values ('anna_
 insert into users (username, password, phonenumber, emailaddress) values ('mukbang_vids', '87i4ejsyr', '6134888910', 'trisha_avocado@gmail.com');
 
 
+-- Uploader 
+insert into uploader values ('1', '4', '492346');
+insert into uploader values ('3', '16', '3526721');
+insert into uploader values ('5', '1', '821346');
+insert into uploader values ('6', '305', '2123865');
+insert into uploader values ('7', '93', '10772463');
+
+
+-- Viewer
+insert into viewer values ('2', '51');
+insert into viewer values ('4', '71345');
+insert into viewer values ('8', '533');
+insert into viewer values ('9', '878');
+insert into viewer values ('10', '24');
+
+
 -- PaymentInfoOwn
 insert into paymentinformationown values ('2', '5215440572935946', '2003  Robson St', '0222', '246');
 insert into paymentinformationown values ('3', '5524993742345244', '716  Brook St', '1023', '622');
@@ -178,11 +217,11 @@ insert into paymentinformationown values ('5', '5441315587984103', '3264  Eagle 
 
 
 -- Video Upload
-insert into videoupload (userid, videoname, videolength, videogenre) values ('1', 'Teen Killers', '01:03:49', 'documentary');
-insert into videoupload (userid, videoname, videolength, videogenre) values ('5', 'Ricky Gervais Stand Up ', '12:42', 'comedy');
-insert into videoupload (userid, videoname, videolength, videogenre) values ('7', 'Theresa May"s political career in three minutes', '03:15', 'political');
-insert into videoupload (userid, videoname, videolength, videogenre) values ('3', 'Cover: Bohemian Rhapsody', '05:53', 'music');
-insert into videoupload (userid, videoname, videolength, videogenre) values ('6', 'Highlights: Milwaukee Bucks vs Toronto Raptors', '13:16', 'sports');
+insert into videoupload (userid, videoname, videoview, videolength, videogenre) values ('1', 'Teen Killers', '300185', '01:03:49', 'documentary');
+insert into videoupload (userid, videoname, videoview, videolength, videogenre) values ('5', 'Ricky Gervais Stand Up ','267221', '''12:42', 'comedy');
+insert into videoupload (userid, videoname, videoview, videolength, videogenre) values ('7', 'Theresa May"s political career in three minutes', '821346', '03:15', 'political');
+insert into videoupload (userid, videoname, videoview, videolength, videogenre) values ('3', 'Cover: Bohemian Rhapsody', '12382', '05:53', 'music');
+insert into videoupload (userid, videoname, videoview, videolength, videogenre) values ('6', 'Highlights: Milwaukee Bucks vs Toronto Raptors', '107724', '13:16', 'sports');
 
 
 -- Current Session
@@ -194,17 +233,16 @@ insert into currentsession values ('A9G2KN4LTA', '6', '5', '08:26');
 
 
 -- ListCreate
-insert into listcreate values ('0289235', '1', 'Favourites');
-insert into listcreate values ('23467276', '2', 'To-Watch');
-insert into listcreate values ('87634572', '2', 'Recents');
-insert into listcreate values ('45272454', '4', 'Favourites');
-insert into listcreate values ('23458282', '8', 'Raptors Highlights');
-insert into listcreate values ('87635724', '4', 'Jams');
-insert into listcreate values ('346124', '6', 'Study Music');
-insert into listcreate values ('367134', '9', 'Liked Videos');
-insert into listcreate values ('8864572', '5', 'Jazz Mix');
-insert into listcreate values ('892562', '8', 'Streams');
-insert into listcreate values ('36835692', '3', 'Recents');
+insert into listcreate (userid, listname) values ('1', 'Favourites');
+insert into listcreate (userid, listname) values ('2', 'To-Watch');
+insert into listcreate (userid, listname) values ('2', 'Recents');
+insert into listcreate (userid, listname) values ('4', 'Favourites');
+insert into listcreate (userid, listname) values ('8', 'Raptors Highlights');
+insert into listcreate (userid, listname) values ('4', 'Jams');
+insert into listcreate (userid, listname) values ('6', 'Study Music');
+insert into listcreate (userid, listname) values ('9', 'Liked Videos');
+insert into listcreate (userid, listname) values ('5', 'Jazz Mix');
+insert into listcreate (userid, listname) values ('3', 'Recents');
 
 
 -- ReportCreate
@@ -248,11 +286,11 @@ insert into watch values ('6', '5', 'A9G2KN4LTA');
 
 
 -- ListVideo
-insert into listvideo values ('87634572', '1');
-insert into listvideo values ('0289235', '2');
-insert into listvideo values ('36835692', '3');
-insert into listvideo values ('87635724', '4');
-insert into listvideo values ('23458282', '5');
+insert into listvideo values ('3', '1');
+insert into listvideo values ('1', '2');
+insert into listvideo values ('10', '3');
+insert into listvideo values ('6', '4');
+insert into listvideo values ('5', '5');
 
 
 -- Advertisementprovide
