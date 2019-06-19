@@ -1,0 +1,52 @@
+<!-- HTML begin-->
+<html>
+    <head>
+        <link href="CSS/Style.css" rel="stylesheet" type="text/css">
+        <title>304Tube - Admin Home</title>
+    </head>  
+
+    <body>
+    <div class="full-height">
+    
+        <div class = "user_info">
+            <center><img src = "images/304tube_icon.png" width="40%" height="auto"></center>
+            <font face = "Helvetica">
+            <h4>
+            <p>
+            Admin ID: placeholder
+            <p>
+            Admin Name: placeholder
+            <p>
+            Report Count: placeholder
+            <h4>   
+        </div>
+    
+        <div class = "page_contents">
+            <center><h2>Unreviewed Reports:</h2><p>
+                list of unreviewed reports with report ID
+                <form method="POST" action="304tube.php">
+                    <font face = "Helvetica">
+                    <center><h2>Review Report:</h2><p>
+                    Report ID:
+                    <input type="text" name="upload_title" id="inputbox" placeholder="Report ID">
+                    Decision:
+                    <input list="decisions" name="review_decision">
+                        <datalist id="decisions">
+                        <option value="Appropriate"></option>
+                        <option value="Inappropriate"></option>
+                        </datalist>
+                    <input class = "form-submit-button" type="SUBMIT" name="submit_review" value="Review">
+                    </center>
+                </form>
+            <center><h2>Reviewed Reports:</h2><p>     
+        </div>
+    </div>
+    </body>
+  
+  
+</html>
+<!-- HTML end-->
+
+<script>
+
+</script>    

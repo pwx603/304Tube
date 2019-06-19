@@ -1,0 +1,76 @@
+<!-- HTML begin-->
+<html>
+    <head>
+        <link href="CSS/Style.css" rel="stylesheet" type="text/css">
+        <title>304Tube - Uploader Home</title>
+    </head>  
+
+    <body>
+    <div class="full-height">
+    
+        <div class = "user_info">
+            <center><img src = "images/304tube_icon.png" width="40%" height="auto"></center>
+            <font face = "Helvetica">
+            <h4>
+            <p>
+            Username: placeholder
+            <p>
+            Video Count: placeholder
+            <p>
+            Total Views: placeholder
+            <p>
+            Payment info 
+            <h4>   
+        </div>
+    
+        <div class = "page_contents">
+                <form method="POST" action="304tube.php">
+                    <font face = "Helvetica">
+                    <center><h2>Upload video:</h2><p>
+                    Video title:
+                    <input type="text" name="upload_title" id="inputbox" placeholder="Title">
+                    Video genre:
+                    <input type="text" name="upload_genre" id="inputbox" placeholder="Genre">
+                    Ad id:
+                    <input type="text" name="upload_ad" id="inputbox" placeholder="Ad ID">
+                    <input class = "form-submit-button" type="SUBMIT" name="uploadConfirm" value="Upload "></center>
+                </form>
+
+                <form method="POST" action="304tube.php">
+                    <center>
+                        <h2>Rename Video:</h2>
+                        Old Title:
+                        <input type="text" name="rename_old_title" id="inputbox" placeholder="Old Title">
+                        New Title:
+                        <input type="text" name="rename_new_title" id="inputbox" placeholder="New Title">
+                        <input class = "form-submit-button" type="SUBMIT" name="renameConfirm" value="Rename">
+                    </center>
+                </form> 
+
+                <form method="POST" action="304tube.php">
+                    <center>
+                        <h2>Delete Video:</h2>
+                        Video Title:
+                        <input type="text" name="delete_title" id="inputbox" placeholder="Title">
+                        <input class = "form-submit-button" type="SUBMIT" name="deleteConfirm" value="Delete">
+                    </center>
+                </form> 
+
+                <div class = "my_video_lists">  
+                    list of all videos
+                </div>     
+
+                <div class = "ads_lists">  
+                    list of all available ads
+                </div>   
+        </div>
+    </div>
+    </body>
+  
+  
+</html>
+<!-- HTML end-->
+
+<script>
+
+</script>    
