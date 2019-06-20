@@ -6,14 +6,14 @@
         <h2 class="text-white">Experience how videos are meant to be streamed</h2>
       </div>
       <div class="col-5 page_login">
-        <nuxt />
+        <nuxt/>
       </div>
     </div>
   </div>
 </template>
 
 
-<style>
+<style scoped>
 html {
   font-family: Helvetica;
   font-size: 16px;

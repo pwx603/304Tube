@@ -11,27 +11,44 @@ export default {
   },
   layout: "login",
   data() {
-    return {
-    };
+    return {};
   },
   methods: {
-    onLogin($event) {
+    async onLogin($event) {
       console.log("on Log in", $event);
-    },
-    async onRegister($event){
-      try{
+
+      try {
         let res = await this.$axios({
-        method: 'post',
-        url: process.env.backendAPI + "users/",
-        data: $event
-      })
+          method: "post",
+          url: process.env.backendAPI + "users/login/",
+          data: $event
+        });
 
-      alert("Account created successfully.")
+        console.log(res.data);
 
-      this.$router.go();
+        await this.$store.dispatch("authenticate/setUser", res.data);
+        console.log(this.$store.getters["authenticate/getUsername"]);
+        console.log(this.$store.getters["authenticate/getUserid"]);
 
-      }catch(err){
-        console.log(err)
+        this.$router.push("/viewer");
+      } catch (err) {
+        console.log(err);
+        alert(err);
+      }
+    },
+    async onRegister($event) {
+      try {
+        let res = await this.$axios({
+          method: "post",
+          url: process.env.backendAPI + "users/",
+          data: $event
+        });
+
+        alert("Account created successfully.");
+
+        this.$router.go();
+      } catch (err) {
+        console.log(err);
       }
       console.log("on Register", $event);
     }

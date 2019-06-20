@@ -92,14 +92,11 @@ export default {
     async onSubmit() {
       if (this.registration) {
         this.$emit("onRegister", this.form);
-        return
+        return;
       }
 
-
-this.$emit("onLogin", this.form);
-      
+      this.$emit("onLogin", this.form);
     },
-
     toggleRegister() {
       this.registration = !this.registration;
     }
