@@ -33,7 +33,7 @@ class UserController {
       //Create new Uploader
       result = await sequelize.query(`insert into uploader(userid) values('${userid}');`)
 
-      
+
       res.status(200).json({
         username: username,
         userid: userid
