@@ -2,16 +2,37 @@
   <div class="container-fluid outer-wrap">
     <div class="row max_view">
       <div class="col-2 sideNav">
-        <img src="~/assets/304tube_icon.png" width="40%" height="auto" class="center">
+        <img src="~/assets/304tube_icon.png" width="40%" height="auto" class="center" @click="test">
         <h6 class="statusText text-white font-weight-bold mt-4">
           Hello, {{username}}
-          <br>Viewcount: 15
-          <br>Playlist:
+          <br>
+          Viewcount: {{viewcount}}
+          <br>
+          <u @click="addPlayList">Playlist:</u>
+          <b-modal
+            ref="playlist-modal"
+            id="modal-add-playlist"
+            title="Add Playlist"
+            @ok="handleAddPlayList"
+          >
+            <b-form-group
+              label-cols-sm="3"
+              label="Playlist Name:"
+              label-align-sm="right"
+              label-for="playlist"
+            >
+              <b-form-input id="playlist" v-model="playlistName" required></b-form-input>
+            </b-form-group>
+          </b-modal>
         </h6>
         <b-list-group>
-          <b-list-group-item class="d-flex justify-content-between align-items-center">
-            Nba
-            <b-badge variant="primary" pill>2</b-badge>
+          <b-list-group-item
+            class="d-flex justify-content-between align-items-center"
+            v-for="list in playlist"
+            :key="list.listid"
+          >
+            {{list.listname}}
+            <b-button variant="danger" size="sm" @click="onDelete(list.listid)">-</b-button>
           </b-list-group-item>
         </b-list-group>
 
@@ -40,16 +61,84 @@
 export default {
   data() {
     return {
-      username: "Anyonomous User"
+      username: "Anyonomous User",
+      viewcount: 0,
+      playlistName: "",
+      playlist: []
     };
   },
-  mounted() {
+
+  async mounted() {
     let getUsername = this.$store.getters["authenticate/getUsername"];
 
     if (getUsername) {
       this.username = getUsername;
     }
+
+    let res = await this.$axios({
+      method: "get",
+      url: process.env.backendAPI + "users/getView",
+      headers: {
+        userid: this.$store.getters["authenticate/getUserid"]
+      }
+    });
+
+    this.viewcount = res.data.viewcount;
+
+    await this.updatePlaylist();
+
     console.log("mounted");
+  },
+
+  methods: {
+    test() {
+      console.log(this.viewcount);
+    },
+
+    addPlayList() {
+      this.$refs["playlist-modal"].show();
+      console.log("added Playlist");
+    },
+    async handleAddPlayList() {
+      let res = await this.$axios({
+        method: "post",
+        url: process.env.backendAPI + "playlists/",
+        data: {
+          listname: this.playlistName
+        },
+        headers: {
+          userid: this.$store.getters["authenticate/getUserid"]
+        }
+      });
+
+      await this.updatePlaylist()
+    },
+
+    async updatePlaylist() {
+      let res = await this.$axios({
+        method: "get",
+        url: process.env.backendAPI + "playlists",
+        headers: {
+          userid: this.$store.getters["authenticate/getUserid"]
+        }
+      });
+
+      this.playlist = res.data;
+    },
+
+    async onDelete(key) {
+      let res = await this.$axios({
+        method: "delete",
+        url: process.env.backendAPI + "playlists",
+        data:{
+          listid: key
+        }
+      });
+
+      await this.updatePlaylist()
+
+      console.log(key);
+    }
   }
 };
 </script>

@@ -3,9 +3,9 @@
     <b-row align-h="center" class="pt-5">
       <b-col cols="8">
         <b-input-group prepend="Search:">
-          <b-form-input id="searchbox"></b-form-input>
+          <b-form-input id="searchbox" v-model="keyword"></b-form-input>
           <b-input-group-append>
-            <b-button variant="primary" class="primary-button">Go</b-button>
+            <b-button variant="primary" class="primary-button" @click="onSearch">Go</b-button>
           </b-input-group-append>
         </b-input-group>
       </b-col>
@@ -15,64 +15,39 @@
       <b-col class="d-flex justify-content-center">
         <div class="sort-group mt-4">
           <span class="font-weight-bold">Sort:</span>
-          <b-button variant="primary" class="primary-button">Title</b-button>
-          <b-button variant="primary" class="primary-button">Views</b-button>
-          <b-button variant="primary" class="primary-button">Length</b-button>
-          <b-button variant="primary" class="primary-button">Upload Date</b-button>
-          <b-button variant="primary" class="primary-button">Above My Views</b-button>
+          <b-button @click="onRefresh('videoname')" variant="primary" class="primary-button">Title</b-button>
+          <b-button @click="onRefresh('videoview')" variant="primary" class="primary-button">Views</b-button>
+          <b-button
+            @click="onRefresh('videolength')"
+            variant="primary"
+            class="primary-button"
+          >Length</b-button>
+          <b-button
+            @click="onRefresh('uploaddate')"
+            variant="primary"
+            class="primary-button"
+          >Upload Date</b-button>
+          <b-button variant="primary" class="primary-button long-button">Above My Avg Views</b-button>
         </div>
       </b-col>
     </b-row>
-    <!-- <b-row align-h="center" class="mt-4">
-      <b-col cols="7" v-for="i in 10" :key=i>
-        <b-card
-          bg-variant="warning"
-          title="Title"
-          img-src="https://i.ytimg.com/vi/AGrynEIyI6k/mqdefault.jpg"
-          img-alt="Card image"
-          img-left
-          class="mb-3"
-          @click="onClick"
-        >
-          <b-card-text>
-            <small>Uploaded By: Jason - View Count: 1234</small>
-          </b-card-text>
-          <b-card-text>Some quick example text to build on the card and make up the bulk of the card's content.</b-card-text>
-        </b-card>
-      </b-col>
-    </b-row>-->
+
     <b-row align-h="center" class="mt-4">
-      <b-col cols="7">
+      <b-col cols="7" v-for="(video, i) in videoList" :key="i" @click="toVidPage(i)">
         <b-card
           bg-variant="warning"
-          title="3 NBA Players Who Agreed To Sign With A Team...But Changed Their Minds!"
-          img-src="https://i.ytimg.com/vi/MyPP0WAueEA/mqdefault.jpg"
+          :title="video.videoname"
+          :img-src="video.thumbnailurl"
           img-alt="Card image"
-          img-height="180"
-          img-width="320"
+          img-height="180px"
+          img-width="320px"
           img-left
           class="mb-3"
         >
           <b-card-text>
-            <small>Uploaded By: winso - View Count: 2</small>
-          </b-card-text>
-        </b-card>
-      </b-col>
-    </b-row>
-    <b-row align-h="center" class="mt-4">
-      <b-col cols="7">
-        <b-card
-          bg-variant="warning"
-          title="The Truth Behind Tanking In The NBA"
-          img-src="https://i.ytimg.com/vi/Fp0NBgeB2Hc/mqdefault.jpg"
-          img-alt="Card image"
-          img-height="180"
-          img-width="320"
-          img-left
-          class="mb-3"
-        >
-          <b-card-text>
-            <small>Uploaded By: winso - View Count: 2</small>
+            <small>Uploaded By: {{video.username}} - Uploaded Date: {{ getDate(video.uploaddate) }}</small>
+            <br>
+            <small>View Count: {{ video.videoview }}</small>
           </b-card-text>
         </b-card>
       </b-col>
@@ -83,10 +58,124 @@
 <script>
 export default {
   layout: "home",
+  data() {
+    return {
+      keyword: null
+    };
+  },
   methods: {
     onClick() {
       console.log("clicked");
+    },
+
+    async onSearch() {
+      console.log(this.keyword);
+
+      try {
+        let res = await this.$axios({
+          method: "get",
+          url: process.env.backendAPI + "videos/",
+          params: {
+            keyword: this.keyword
+          }
+        });
+        console.log(res.data);
+        this.videoList = res.data.videos;
+        this.videocount = res.data.videocount;
+        this.videoviews = res.data.videoviews;
+      } catch (err) {
+        console.log(err);
+        alert("Failed to obtain video list");
+      }
+    },
+
+    async onRefresh(order) {
+      try {
+        let res = await this.$axios({
+          method: "get",
+          url: process.env.backendAPI + "videos/",
+          params: {
+            orderby: order
+          }
+        });
+
+        console.log("order by?");
+
+        console.log(res.data);
+
+        this.videoList = res.data.videos;
+        this.videocount = res.data.videocount;
+        this.videoviews = res.data.videoviews;
+      } catch (err) {
+        console.log(err);
+        alert("Failed to obtain video list");
+      }
+    },
+
+    async onAboveAveView() {
+      try {
+        let res = await this.$axios({
+          method: "get",
+          url: process.env.backendAPI + "videos/",
+          params: {
+            filter: "aboveAvgView"
+          },
+          headers: {
+            userid: this.$store.getters["authenticate/getUserid"]
+          }
+        });
+
+        console.log(res.data);
+
+        this.videoList = res.data.videos;
+        this.videocount = res.data.videocount;
+        this.videoviews = res.data.videoviews;
+      } catch (err) {
+        console.log(err);
+        alert("Failed to obtain video list");
+      }
+    },
+
+    async toVidPage(i){
+
+      //Increase my own viewcount
+
+      try{
+        let res = await this.$axios({
+          method: "patch",
+          url: process.env.backendAPI + "users/incView",
+          headers: {
+            userid: this.$store.getters["authenticate/getUserid"]
+          }
+        });
+
+        console.log(res.data)
+
+      }catch(err){
+        alert("Failed to inc view count")
+        console.log(err)
+      }
+
+      let videoid = this.videoList[i].videoid
+      this.$router.push(`/watch/${videoid}`)
+    },
+
+    getDate(date) {
+      let d = new Date(date);
+      return d.toLocaleString("en-US", { timeZone: "Canada/Pacific" });
     }
+  },
+
+  async asyncData({ $axios, store }) {
+    let res = await $axios({
+      method: "get",
+      url: process.env.backendAPI + "videos/"
+    });
+    return {
+      videoList: res.data.videos,
+      videocount: res.data.videocount,
+      videoviews: res.data.videoviews
+    };
   }
 };
 </script>
@@ -99,6 +188,10 @@ export default {
   border-radius: 20px;
   box-shadow: 5px 5px 5px #eee;
   text-shadow: none;
+}
+
+.long-button {
+  width: 200px !important;
 }
 
 .card-title {

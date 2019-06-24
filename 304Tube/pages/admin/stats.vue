@@ -24,7 +24,24 @@
 
 <script>
 export default {
-  layout: "admin"
+  layout: "admin",
+  data(){
+    return{
+
+    }
+  },
+
+  async asyncData({ $axios, store }) {
+    let res = await $axios({
+      method: "get",
+      url: process.env.backendAPI + "videos/"
+    });
+    return {
+      videoList: res.data.videos,
+      videocount: res.data.videocount,
+      videoviews: res.data.videoviews
+    };
+  }
 };
 </script>
 

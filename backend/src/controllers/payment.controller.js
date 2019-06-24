@@ -15,7 +15,7 @@ class PaymentController {
       res.status(200).json(result[0])
 
     } catch (err) {
-      res.status(400), json(err)
+      res.status(400).json(err)
     }
   }
 

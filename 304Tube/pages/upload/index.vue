@@ -7,16 +7,17 @@
             <h2 class="font-weight-bold d-inline">Upload Video</h2>
 
             <b-button v-b-modal.modal-add-video variant="primary" class="primary-button m-4">+ Add</b-button>
+            <!-- <b-button @click="onRefresh" variant="primary" class="primary-button m-4">Refresh</b-button> -->
             <!-- <b-button
               v-b-modal.modal-delete-payment
               variant="danger"
               class="primary-button m-4"
             >- Delete</b-button>-->
 
-            <center centered id="modal-add-video" title="Add Video" @ok="handleAddVideo" size="xl">
+            <b-modal id="modal-add-video" title="Add Video" @ok="handleAddVideo" size="xl">
               <b-form-group
                 label-cols-sm="3"
-                label="Youtube Link:"
+                label="Resource(Youtube URL):"
                 label-align-sm="right"
                 label-for="url"
               >
@@ -56,66 +57,77 @@
               </b-form-group>
               <center>
                 <h4>Preview Image</h4>
-                <img :src="addVideoForm.imageurl" alt>
+                <img :src="addVideoForm.thumbnailurl" alt>
               </center>
-            </center>
+            </b-modal>
 
-            <p class="mt-4">Uploaded Videos: 3</p>
-            <p>Total View Count: 15</p>
+            <b-modal ref="edit-video-modal" id="modal-edit-video" title="Edit Video" @ok="handleEditVideo" size="xl">
+              <b-form-group
+                label-cols-sm="3"
+                label="Video Name:"
+                label-align-sm="right"
+                label-for="edit-videoname"
+              >
+                <b-form-input id="edit-videoname" v-model="editVideo.videoname" required></b-form-input>
+              </b-form-group>
+
+              <b-form-group
+                label-cols-sm="3"
+                label="Video Length:"
+                label-align-sm="right"
+                label-for="edit-videolength"
+              >
+                <b-form-input id="edit-videolength" v-model="editVideo.videolength" required></b-form-input>
+              </b-form-group>
+
+              <b-form-group
+                label-cols-sm="3"
+                label="Video Genre:"
+                label-align-sm="right"
+                label-for="edit-videogenre"
+              >
+                <b-form-input id="edit-videogenre" v-model="editVideo.videogenre" required></b-form-input>
+              </b-form-group>
+
+              <b-form-group
+                label-cols-sm="3"
+                label="Thumbnail URL:"
+                label-align-sm="right"
+                label-for="edit-thumbnail"
+              >
+                <b-form-input id="edit-thumbnail" v-model="editVideo.thumbnailurl" required></b-form-input>
+              </b-form-group>
+
+
+              <center>
+                <h4>Preview Image</h4>
+                <img :src="editVideo.thumbnailurl" alt>
+              </center>
+            </b-modal>
+
+            <p class="mt-4">Uploaded Videos: {{ videocount }}</p>
+            <p>Average View Count: {{ averageview }}</p>
+            <p>Total View Count: {{ videoviews }}</p>
           </div>
         </div>
       </b-col>
     </b-row>
     <b-row align-h="center" class="mt-4">
-      <b-col cols="7">
+      <b-col cols="7" v-for="(video, i) in videoList" :key="i" @click="onEdit(i)">
         <b-card
           bg-variant="warning"
-          title="Best Clutch Plays | 2019 NBA Postseason"
-          img-src="https://i.ytimg.com/vi/HvvRcAeTn8k/hqdefault.jpg"
+          :title="video.videoname"
+          :img-src="video.thumbnailurl"
           img-alt="Card image"
-          img-height="180"
-          img-width="320"
+          img-height="180px"
+          img-width="320px"
           img-left
           class="mb-3"
         >
           <b-card-text>
-            <small>Uploaded By: winso - View Count: 11</small>
-          </b-card-text>
-        </b-card>
-      </b-col>
-    </b-row>
-    <b-row align-h="center" class="mt-4">
-      <b-col cols="7">
-        <b-card
-          bg-variant="warning"
-          title="3 NBA Players Who Agreed To Sign With A Team...But Changed Their Minds!"
-          img-src="https://i.ytimg.com/vi/MyPP0WAueEA/mqdefault.jpg"
-          img-alt="Card image"
-          img-height="180"
-          img-width="320"
-          img-left
-          class="mb-3"
-        >
-          <b-card-text>
-            <small>Uploaded By: winso - View Count: 2</small>
-          </b-card-text>
-        </b-card>
-      </b-col>
-    </b-row>
-    <b-row align-h="center" class="mt-4">
-      <b-col cols="7">
-        <b-card
-          bg-variant="warning"
-          title="The Truth Behind Tanking In The NBA"
-          img-src="https://i.ytimg.com/vi/Fp0NBgeB2Hc/mqdefault.jpg"
-          img-alt="Card image"
-          img-height="180"
-          img-width="320"
-          img-left
-          class="mb-3"
-        >
-          <b-card-text>
-            <small>Uploaded By: winso - View Count: 2</small>
+            <small>Uploaded By: {{video.username}} - Uploaded Date: {{  getDate(video.uploaddate) }}</small>
+            <br>
+            <small>View Count: {{ video.videoview }}</small>
           </b-card-text>
         </b-card>
       </b-col>
@@ -124,6 +136,8 @@
 </template>
 
 <script>
+import { parse as parseDuration, pattern } from "iso8601-duration";
+
 export default {
   layout: "home",
   data() {
@@ -133,15 +147,22 @@ export default {
         videoname: null,
         videolength: null,
         videogenre: null,
-        imageurl: null
+        thumbnailurl: null
+      },
+      editVideo:{
+        videoname: null,
+        videolength: null,
+        videogenre: null,
+        thumbnailurl: null
       }
     };
   },
+
   methods: {
     async generateInfo() {
       let videoID = this.extractVideoID(this.addVideoForm.url);
 
-      let url = `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoID}&key=${
+      let url = `https://www.googleapis.com/youtube/v3/videos?part=snippet%2C%20contentDetails&id=${videoID}&key=${
         process.env.youtubeKey
       }`;
 
@@ -150,20 +171,114 @@ export default {
           method: "get",
           url: url
         });
-        let videoInfo = res.data.items[0].snippet;
-        this.addVideoForm.videoname = videoInfo.title;
-        this.addVideoForm.imageurl = videoInfo.thumbnails.medium.url;
+        let videoInfo = res.data.items[0];
+        this.addVideoForm.videoname = videoInfo.snippet.title;
+        this.addVideoForm.thumbnailurl =
+          videoInfo.snippet.thumbnails.medium.url;
 
-        console.log(videoInfo);
+        let categoryId = videoInfo.snippet.categoryId;
+        let duration = videoInfo.contentDetails.duration;
+
+        console.log(duration);
+
+        this.addVideoForm.videolength = this.formatDuration(duration);
+        url = `https://www.googleapis.com/youtube/v3/videoCategories?part=snippet&id=${categoryId}&key=${
+          process.env.youtubeKey
+        }`;
+
+        res = await this.$axios({
+          method: "get",
+          url: url
+        });
+
+        this.addVideoForm.videogenre = res.data.items[0].snippet.title;
       } catch (err) {
         console.log(err);
         alert("Failed to generate video info.");
       }
     },
 
-    handleAddVideo() {
-      console.log("handleAddVideo");
-      console.log(this.addVideoForm);
+    async handleAddVideo() {
+      try {
+        let res = await this.$axios({
+          method: "post",
+          url: process.env.backendAPI + "videos/",
+          data: this.addVideoForm,
+          headers: {
+            userid: this.$store.getters["authenticate/getUserid"]
+          }
+        });
+
+        console.log(res.data);
+        alert("Video Uploadedad Succesfully");
+        this.addVideoForm = {
+          url: null,
+          videoname: null,
+          videolength: null,
+          videogenre: null,
+          thumbnailurl: null
+        };
+
+        await this.onRefresh()
+
+      } catch (err) {
+        console.log(err);
+        alert("Failed to upload video");
+      }
+    },
+
+    async onRefresh(){
+      try{
+        let res = await this.$axios({
+          method: "get",
+          url: process.env.backendAPI + "videos/",
+          headers: {
+            userid: this.$store.getters["authenticate/getUserid"]
+          }
+        });
+        console.log(res.data)
+
+        this.videoList = res.data.videos
+        this.videocount = res.data.videocount
+        this.videoviews = res.data.videoviews
+        this.averageview = res.data.averageview
+
+
+      }catch(err){
+        console.log(err);
+        alert("Failed to obtain video list")
+      }
+    },
+
+    async onEdit(key){
+      this.editVideo = Object.assign({}, this.videoList[key])
+      console.log(this.editVideo)
+      this.$refs['edit-video-modal'].show()
+      
+    },
+
+    async handleEditVideo(){
+      console.log(this.editVideo)
+
+      try{
+      let res = await this.$axios({
+          method: "patch",
+          url: process.env.backendAPI + `videos/${this.editVideo.videoid}`,
+          data: this.editVideo,
+          headers: {
+            userid: this.$store.getters["authenticate/getUserid"]
+          }
+        });
+
+        await this.onRefresh();
+
+      }catch(err){
+        console.log(err)
+        alert("Failed to update video")
+
+      }
+
+
     },
 
     extractVideoID(url) {
@@ -174,7 +289,30 @@ export default {
       } else {
         alert("Could not extract video ID.");
       }
+    },
+
+    formatDuration(duration) {
+      let d = parseDuration(duration);
+      return `${d.hours}:${d.minutes}:${d.seconds}`;
+    },
+
+    getDate(date){
+      let d = new Date(date)
+      return d.toLocaleString('en-US', { timeZone: 'Canada/Pacific' })
     }
+  },
+
+
+
+  async asyncData({ $axios, store }) {
+    let res = await $axios({
+      method: "get",
+      url: process.env.backendAPI + "videos/",
+      headers: {
+        userid: store.getters["authenticate/getUserid"]
+      }
+    });
+    return { videoList: res.data.videos, videocount: res.data.videocount, averageview: Number(res.data.averageview), videoviews: res.data.videoviews};
   }
 };
 </script>

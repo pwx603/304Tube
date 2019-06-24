@@ -18,13 +18,15 @@ class UserController {
       emailaddress
     } = req.body;
 
+    console.log(req.body)
+
     try {
       let result = await sequelize.query(`INSERT INTO users (username, password, phonenumber,emailaddress) VALUES ('${username}', '${password}', '${phonenumber}', '${emailaddress}');`)
 
       //Get userid
       result = await sequelize.query(`select userid, username from Users where username='${username}' AND password='${password}';`)
 
-      let username = result[0][0].username
+      username = result[0][0].username
       let userid = result[0][0].userid
 
       //Create new Viewer
@@ -76,6 +78,45 @@ class UserController {
         "msg": err.messageg
       })
     }
+  }
+
+  static async increaseView(req, res){
+    let userid = req.get("userid")
+    try{
+      let result = await sequelize.query(`UPDATE viewer set viewcount=viewcount + 1 where userid='${userid}';`)
+      console.log("Result: ", result)
+
+      res.status(200).json({
+        "msg": "View Count Updated"
+      })
+
+    }catch(err){
+      console.log(err)
+      res.status(400).json(err)
+    }
+  }
+
+  static async getView(req, res){
+    console.log("Get view Count")
+
+    let userid = req.get("userid")
+      
+    try{
+      let result = await sequelize.query(`select viewcount from Viewer where userid='${userid}';`)
+      let viewcount = result[0][0]
+      console.log("Result: ", viewcount)
+
+      res.status(200).json(viewcount)
+
+    }catch(err){
+      console.log(err)
+      res.status(400).json(err)
+    }
+    
+  }
+
+  static async getAllUserVideo(req, res){
+    let userid = req.get("userid")
   }
 }
 
